@@ -8,7 +8,7 @@ function DronesIndexController(   $http , $sce,    NgMap){
   NgMap.getMap().then(function(map) {
   });
 
-  var db = "http://api.dronestre.am/data";
+  var db = "https://api.dronestre.am/data";
 
   var vm = this;
 

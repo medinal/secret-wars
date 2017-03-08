@@ -1,0 +1,62 @@
+.jumbotron {
+  background-image: url("../images/header.jpg");
+  background-size: cover;
+  opacity: .50;
+  color: white;
+}
+
+.homepage {
+  color: white;
+}
+
+.homepage:hover {
+  color: rgb(240,240,240);
+  text-decoration: none;
+}
+
+.homepage:focus {
+  color: rgb(240,240,240);
+  text-decoration: none;
+}
+
+.death {
+  color: red;
+  font-weight: bold;
+}
+
+.civilian {
+  font-weight: bold;
+}
+
+.covert {
+  font-weight: bold;
+}
+
+.pages {
+  display: inline-block;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.question {
+  font-weight: 400;
+}
+
+footer {
+  background-image: url("../images/header.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 30vh;
+  opacity: .50;
+  color: rgb(255,255,255);
+}
+
+.information {
+  padding-right: 30px;
+  border-right: solid #eee 1px;
+}

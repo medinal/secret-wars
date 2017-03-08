@@ -1,0 +1,119 @@
+<div class="container">
+  <form>
+    <label>Filter By Date:</label>
+    <!-- for the first two inputs, on change they re-sort which data is transfered to the display array and reset the current page to 0 -->
+    <input class="form-group" ng-model="dronesShowCtrl.startDate" ng-change="dronesShowCtrl.reSort(); dronesShowCtrl.currentPage=0" placeholder="yyyy-MM-dd" type="date">
+    <input class="form-group" ng-model="dronesShowCtrl.endDate" ng-change="dronesShowCtrl.reSort(); dronesShowCtrl.currentPage=0" placeholder="yyyy-MM-dd" type="date">
+    <!-- this input filters by keyword, saving that keyword in the controller -->
+    <input class="form-control" type="text" placeholder="Filter by Keyword" ng-change="dronesShowCtrl.currentPage=0" ng-model="dronesShowCtrl.searchFilter">
+    <br>
+  </form>
+
+  <!-- loading image -->
+  <div ng-if="dronesShowCtrl.display.length==0">
+    <img class="center-block" src="public/images/loading.gif">
+  </div>
+
+  <!-- only displays when database responds -->
+  <div ng-if="dronesShowCtrl.display.length>0">
+    <!-- pagination container. on each click it adds or subtracts from the page number. it calculates pages from the sorted values and rounds up to the closest integer value -->
+    <div class="text-center">
+      <button class="btn btn-default" type="button" ng-disabled="dronesShowCtrl.currentPage == 0" ng-click="dronesShowCtrl.previous()">Previous</button>
+      <span>Page {{ dronesShowCtrl.currentPage+1 }} of {{ results.length/10 | roundup }}</span>
+      <button class="btn btn-default" type="button" ng-disabled="(dronesShowCtrl.currentPage+1) == (results.length/10 | roundup)" ng-click="dronesShowCtrl.next()">Next</button>
+    </div>
+    <br>
+    <!-- once there is data, the table is displayed -->
+    <table ng-if="dronesShowCtrl.display.length>0" class="table table-bordered table-striped">
+
+      <thead>
+        <tr>
+          <td class="text-center">
+            More Details
+          </td>
+
+          <!-- each table header corresponds to a sort variable and a boolean value for whether sorting is ascending or descending. Also, resets current page to 0 -->
+          <td class="text-center">
+            <a href="#" ng-click="dronesShowCtrl.sortType = 'date'; sortReverse = !sortReverse; dronesShowCtrl.currentPage=0">
+              Date
+              <span ng-show="dronesShowCtrl.sortType == 'date' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+              <span ng-show="dronesShowCtrl.sortType == 'date' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="#" ng-click="dronesShowCtrl.sortType = 'country'; sortReverse = !sortReverse; dronesShowCtrl.currentPage=0">
+              Country
+              <span ng-show="dronesShowCtrl.sortType == 'country' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+              <span ng-show="dronesShowCtrl.sortType == 'country' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="#" ng-click="dronesShowCtrl.sortType = 'town'; sortReverse = !sortReverse; dronesShowCtrl.currentPage=0">
+              Town
+              <span ng-show="dronesShowCtrl.sortType == 'town' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+              <span ng-show="dronesShowCtrl.sortType == 'town' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="#" ng-click="dronesShowCtrl.sortType = 'deaths_min'; sortReverse = !sortReverse; dronesShowCtrl.currentPage=0">
+              Casualties
+              <span ng-show="dronesShowCtrl.sortType == 'deaths_min' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+              <span ng-show="dronesShowCtrl.sortType == 'deaths_min' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a>
+          </td>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- this is crazy. every item in the display array is sorted by header and filtered by keyword. those results are saved as a global variable and then paginated. -->
+        <tr ng-repeat="strike in ($parent.results = (dronesShowCtrl.display | orderBy: dronesShowCtrl.sortType: sortReverse | filter: dronesShowCtrl.searchFilter) | limitTo: 10 : dronesShowCtrl.currentPage*10)">
+          <td class="text-center">
+            <button type="button" class="btn btn-default" ng-click="dronesShowCtrl.current = strike; open()">Details!</button>
+          </td>
+          <td>{{ strike.date | date : format : 'longDate' }}</td>
+          <td>{{ strike.country }}</td>
+          <td>{{ strike.town }}</td>
+          <td>{{ strike.deaths_min }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <div class="text-center">
+      <button class="btn btn-default" type="button" ng-disabled="dronesShowCtrl.currentPage == 0" ng-click="dronesShowCtrl.previous()">Previous</button>
+      <span>Page {{ dronesShowCtrl.currentPage+1 }} of {{ results.length/10 | roundup }}</span>
+      <button class="btn btn-default" type="button" ng-disabled="(dronesShowCtrl.currentPage+1) == (results.length/10 | roundup)" ng-click="dronesShowCtrl.next()">Next</button>
+    </div>
+
+  </div>
+
+  <!-- this is the modal that is displayed when the details button is clicked. -->
+  <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Strike Details</h3>
+    </div>
+    <div class="container modal-body">
+      <div class="col-xs-4">
+        <h3><b>Date:</b> {{ items.date | date : format : 'longDate' }}</h3>
+        <h3><b>Country:</b><span> {{ items.country }}</span></h3>
+        <h3><b>Location:</b><span> {{ items.location }}</span></h3>
+        <h3><b>Summary:</b><span><a target="_blank" ng-href="{{ items.bij_link }}"> {{ items.narrative }}</a></span></h3>
+        <h3><b>Total Casualties:</b><span> {{ items.deaths }}</span></h3>
+        <ul>
+          <h4><b>Civilian Casualties:</b><span> {{ items.civilians }}</span></h4>
+          <h4><b>Child Casualties:</b><span> {{ items.children }}</span></h4>
+        </ul>
+        <br>
+      </div>
+      <div class="col-xs-4">
+        <img class="img-responsive" ng-src="https://maps.googleapis.com/maps/api/staticmap?center={{items.lat}},{{items.lon}}&zoom=5&size=400x400&markers=color:red%7Clabel:X%7C{{items.lat}},{{items.lon}}&key=AIzaSyDzmp5otqmgfZOinodlQfnn4b1Yo9Q4HUI" alt="Description"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    </div>
+  </script>
+
+
+
+</div>

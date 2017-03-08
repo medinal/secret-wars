@@ -7,17 +7,17 @@ function config  ( $routeProvider,   $locationProvider,   $qProvider) {
 
   $routeProvider
     .when('/', {
-      templateUrl: '/views/strikes.html',
+      templateUrl: '/templates/strikes.html',
       controllerAs: 'dronesIndexCtrl',
       controller: 'DronesIndexController'
     })
     .when('/details', {
-      templateUrl: '/views/strike-show.html',
+      templateUrl: '/templates/strike-show.html',
       controllerAs: 'dronesShowCtrl',
       controller: 'DronesShowController'
     })
     .when('/information', {
-      templateUrl: '/views/information.html',
+      templateUrl: '/templates/information.html',
       controllerAs: 'infoCtrl',
       controller: 'InformationController'
     })

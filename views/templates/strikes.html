@@ -1,6 +1,6 @@
 <!-- loading icon while waiting for response from database -->
 <div ng-if="dronesIndexCtrl.strikes.length==0">
-  <img class="center-block" src="public/images/loading.gif">
+  <img class="center-block" src="/images/loading.gif">
 </div>
 
 <!-- only displays this container when the database has responded -->
@@ -23,7 +23,7 @@
             <marker ng-repeat="strike in dronesIndexCtrl.locations" position="{{ strike }}"></marker>
           </map>
         </div>
-        
+
       </div>
     </div>
     <br>

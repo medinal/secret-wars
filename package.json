@@ -1,0 +1,22 @@
+{
+  "name": "secret-wars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medinal/secret-wars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/medinal/secret-wars/issues"
+  },
+  "homepage": "https://github.com/medinal/secret-wars#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}

@@ -14,7 +14,7 @@ function DronesShowController(   $http , $sce,    NgMap,   $scope,   $uibModal){
   NgMap.getMap().then(function(map) {
   });
 
-  var db = "//api.dronestre.am/data";
+  var db = "http://api.dronestre.am/data";
 
   var vm = this;
 
